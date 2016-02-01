@@ -1,0 +1,24 @@
+{
+  "name": "wia-raspicam",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wiaio/wia-raspicam.git"
+  },
+  "author": "Wia <team@wia.io> (https://www.wia.io)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wiaio/wia-raspicam/issues"
+  },
+  "homepage": "https://github.com/wiaio/wia-raspicam#readme",
+  "dependencies": {
+    "onoff": "^1.0.4",
+    "raspicam": "^0.2.13",
+    "wia": "^1.1.12"
+  }
+}
