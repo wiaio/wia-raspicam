@@ -19,6 +19,6 @@
   "dependencies": {
     "onoff": "^1.0.4",
     "raspicam": "^0.2.13",
-    "wia": "^1.1.12"
+    "wia": "^1.1.14"
   }
 }

@@ -1,12 +1,13 @@
 'use strict';
 
-var wia = require('wia')('YOUR_DEVICE_TOKEN');
+var wia = require('wia')('DEVICE_SECRET_KEY');
 
 wia.logs.publish({level:"info", message:"Starting wia-raspicam."});
 
 var alarmEnabled = false;
 wia.events.publish({name: "alarmEnabled", data: "false"});
 
+// Setup the camera
 var fs = require('fs');
 var RaspiCam = require("raspicam");
 
@@ -30,28 +31,7 @@ camera.on("read", function(err, timestamp, filename){
 	});
 });
 
-setTimeout(function() {
-  wia.functions.register({
-  	name: "enableAlarm"
-  }, function(data) {
-  	alarmEnabled = true;
-  	wia.events.publish({name: "alarmEnabled", data: "true"});
-  });
-
-  wia.functions.register({
-  	name: "disableAlarm"
-  }, function(data) {
-  	alarmEnabled = false;
-  	wia.events.publish({name: "alarmEnabled", data: "false"});
-  });
-
-  wia.functions.register({
-  	name: "takePhoto"
-  }, function(data) {
-  	camera.start();
-  });
-}, 2500);
-
+// Use this to detect motion using a PIR
 var Gpio = require('onoff').Gpio,
 	pir = new Gpio(4, 'in', 'both');
 
@@ -64,4 +44,25 @@ pir.watch(function (err, value) {
 		wia.events.publish({name: "motionDetected"});
 		camera.start();
 	}
+});
+
+// Functions to remotely enable/disable alarm and take photo
+wia.functions.register({
+	name: "enableAlarm"
+}, function(data) {
+	alarmEnabled = true;
+	wia.events.publish({name: "alarmEnabled", data: "true"});
+});
+
+wia.functions.register({
+	name: "disableAlarm"
+}, function(data) {
+	alarmEnabled = false;
+	wia.events.publish({name: "alarmEnabled", data: "false"});
+});
+
+wia.functions.register({
+	name: "takePhoto"
+}, function(data) {
+	camera.start();
 });
