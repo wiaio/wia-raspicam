@@ -13,17 +13,16 @@ var RaspiCam = require("raspicam");
 
 var camOpts = {
 	mode: "photo",
-	output: "photo.jpeg",
-	rotation: 180
+	output: "photo.jpeg"
 }
 
 var camera = new RaspiCam(camOpts);
 
 camera.on("read", function(err, timestamp, filename){
 	if (err) {
-    wia.logs.publish({level:"error", message:err.toString()});
-    return;
-  }
+		wia.logs.publish({level:"error", message:err.toString()});
+		return;
+	}
 
 	wia.events.publish({
 		name: "photo",
@@ -32,18 +31,19 @@ camera.on("read", function(err, timestamp, filename){
 });
 
 // Use this to detect motion using a PIR
-var Gpio = require('onoff').Gpio,
-	pir = new Gpio(4, 'in', 'both');
+var Gpio = require('onoff').Gpio;
+var pir = new Gpio(4, 'in', 'both');
 
 pir.watch(function (err, value) {
-	if (err) {
-    wia.logs.publish({level:"error", message:err.toString()});
-    return;
-  }
-	if (alarmEnabled) {
-		wia.events.publish({name: "motionDetected"});
-		camera.start();
-	}
+		if (err) {
+			wia.logs.publish({level:"error", message:err.toString()});
+			return;
+		}
+
+		if (alarmEnabled) {
+			wia.events.publish({name: "motionDetected"});
+			camera.start();
+		}
 });
 
 // Functions to remotely enable/disable alarm and take photo
